@@ -9,7 +9,7 @@ const config = require("./config/key");
 app.use(bodyParser.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
-//express에서 다 해주는구나
+//express에서 해주니 body-parser 필요없다.
 
 const { User } = require("./models/User");
 

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-//slat 자릿수
+// 암호화에 이용하는 slat 자릿수 설정
 const saltRounds = 10;
 
 const userSchema = mongoose.Schema({
@@ -42,13 +42,13 @@ userSchema.pre("save", function (next) {
   const user = this;
 
   //password 변환될때만
-  if (userSchema.isModified("password")) {
+  if (user.isModified("password")) {
     //salt를 이용해서 비밀번호 암호화
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) return next(err);
-      bcrypt.hash(userSchema.password, salt, function (err, hash) {
+      bcrypt.hash(user.password, salt, function (err, hash) {
         if (err) return next(err);
-        userSchema.password = hash;
+        user.password = hash;
         next();
       });
     });

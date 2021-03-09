@@ -1,4 +1,4 @@
-환경변수;
+//환경변수
 if (process.env.NODE_ENV === "production") {
   module.exports = require("./prod");
 } else {
