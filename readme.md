@@ -1,13 +1,20 @@
 # Boiler-plate
 나만의 boiler-plate 만들기
-[x] register 구현
+- [x] register 
+- [x] login 
+- [ ] auth
+- [ ] logout
+- [ ] 
 
-## 진행 날짜
+## 진행정도
 
 날짜 | :구현(진행률):
 ---|---
-3월8일 | Register 기능 구현 (30%)
+3월 8일 | Register 기능 구현 (30%)
+3월 9일 | Login, Logout 구현 (40%) **백엔드 완료**
+3월 10일 | **프론트**
 
+****
 
 
 > 나만의 boiler-plate로 만들자
