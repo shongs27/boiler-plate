@@ -32,6 +32,14 @@ mongoose
   .then(() => console.log("몽고DB 접속 온"))
   .catch((err) => console.log(err));
 
+app.get("/api/hello", (req, res) => {
+  res.send("안녕하세요 아유미예요");
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.post("/api/users/register", (req, res) => {
   //회원가입 할떄 필요한 정보들을 client에서 가져오면
   // 그것들을 데이터베이스에 넣어준다
@@ -86,7 +94,7 @@ app.get("/api/users/auth", auth, (req, res) => {
     //클라이언트에다 정보를 제공해주면 됨
     //유저정보들 제공하기
     _id: req.user._id,
-    isAdmin: req.user.role === 0 ? false : true, //관리자인지 확인해주는 코드 0일때만 관리자
+    isAdmin: req.user.role === 0 ? false : true, //관리자인지 확인해주는 코드
     isAuth: true,
     email: req.user.email,
     name: req.user.name,
@@ -101,10 +109,6 @@ app.get("/api/users/logout", auth, (req, res) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).send({ success: true });
   });
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
 });
 
 app.listen(port, () => {
