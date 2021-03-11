@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import LandingPage from "./components/views/LandingPage/LandingPage";
 import LoginPage from "./components/views/LoginPage/LoginPage";
@@ -18,9 +18,11 @@ function App() {
           of them to render at a time
         */}
         <Switch>
+          {/* 이렇게 작성하면 props를 쓸 수 없다
           <Route exact path="/">
             <LandingPage />
-          </Route>
+          </Route> */}
+          <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/footer" component={Footer} />

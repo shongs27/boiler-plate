@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const port = 5000;
-const bodyParser = require("body-Parser");
 
+const bodyParser = require("body-Parser");
 const cookieParser = require("cookie-parser");
 
 const config = require("./config/key");
@@ -10,18 +10,18 @@ const config = require("./config/key");
 const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
 
+//express에서 기본제공, body-parser 필요없다.
 //application/x-www-form-urlencoded 를 분석
 app.use(express.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
-//express에서 기본제공, body-parser 필요없다.
 
 app.use(cookieParser());
 
 const mongoose = require("mongoose");
 
 //github에서 몽고db 주소를 숨기기 위해서 config.mongoURI로 설정
-// Deprecation Warnings
+//connect 환경설정 {Deprecation Warnings}
 mongoose
   .connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/users/register", (req, res) => {
-  //회원가입 할떄 필요한 정보들을 client에서 가져오면
+  //회원가입 할 때 필요한 정보들을 client에서 가져오면
   // 그것들을 데이터베이스에 넣어준다
 
   const user = new User(req.body);

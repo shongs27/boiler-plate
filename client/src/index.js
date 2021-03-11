@@ -4,17 +4,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+//antDesign 프레임워크
 import "antd/dist/antd.css";
 
+//Provider 를 사용하여 리액트 프로젝트에 스토어 연동
 import { Provider } from "react-redux";
-
-//본래 createStore만 쓰면되지만
+//기본 createStore에다가
 // Function , Promise 객체에 적용을 위한 미들웨어 설치
 import { applyMiddleware, createStore } from "redux";
 import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
 import Reducer from "./_reducers/index";
 
+//호출되어 반환된 함수에 매개변수 넣고 다시 호출
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,
   ReduxThunk
