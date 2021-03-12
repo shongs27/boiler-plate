@@ -5,22 +5,23 @@ const port = 5000;
 const bodyParser = require("body-Parser");
 const cookieParser = require("cookie-parser");
 
-const config = require("./config/key");
-
 const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
 
 //express에서 기본제공, body-parser 필요없다.
 //application/x-www-form-urlencoded 를 분석
+//false면 queryString모듈, true면 qs모듈로 쿼리스트링함
 app.use(express.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
 
+//요청에 쿠키를 해석해 req.cookies 객체로 만든다
 app.use(cookieParser());
 
+const config = require("./config/key");
 const mongoose = require("mongoose");
 
-//github에서 몽고db 주소를 숨기기 위해서 config.mongoURI로 설정
+//github에서 몽고DB 주소를 숨기기 위해서 config.mongoURI로 설정
 //connect 환경설정 {Deprecation Warnings}
 mongoose
   .connect(config.mongoURI, {
@@ -33,7 +34,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.get("/api/hello", (req, res) => {
-  res.send("안녕하세요 아유미예요");
+  res.send("안녕하세요 반가워요");
 });
 
 app.get("/", (req, res) => {
@@ -44,6 +45,7 @@ app.post("/api/users/register", (req, res) => {
   //회원가입 할 때 필요한 정보들을 client에서 가져오면
   // 그것들을 데이터베이스에 넣어준다
 
+  //(user) => req한 객체
   const user = new User(req.body);
 
   //mongoDB Mothod로 이동 -> 저장하기전에 Bcrypt로 암호화
@@ -57,6 +59,7 @@ app.post("/api/users/register", (req, res) => {
 
 app.post("/api/users/login", (req, res) => {
   //요청된 이메일을 데이터베이스에서 있는지 찾는다.
+  //(User) => 저장소
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user)
       return res.json({
@@ -72,7 +75,7 @@ app.post("/api/users/login", (req, res) => {
         });
 
       //비밀번호 맞다면 그 유저를 위한 Token 생성
-      // webToken 다운로드 npm install jsonwebtoken
+      // npm install jsonwebtoken
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
 
@@ -94,7 +97,8 @@ app.get("/api/users/auth", auth, (req, res) => {
     //클라이언트에다 정보를 제공해주면 됨
     //유저정보들 제공하기
     _id: req.user._id,
-    isAdmin: req.user.role === 0 ? false : true, //관리자인지 확인해주는 코드
+    //관리자인지 확인해주는 코드
+    isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
     email: req.user.email,
     name: req.user.name,
@@ -105,10 +109,15 @@ app.get("/api/users/auth", auth, (req, res) => {
 });
 
 app.get("/api/users/logout", auth, (req, res) => {
-  User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
-    if (err) return res.json({ success: false, err });
-    return res.status(200).send({ success: true });
-  });
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    { token: "" },
+    //어떻게 (err, user)가 들어갈 수 있지?
+    (err, user) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({ success: true });
+    }
+  );
 });
 
 app.listen(port, () => {

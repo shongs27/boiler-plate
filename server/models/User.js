@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+
+//암호화 라이브러리
 const bcrypt = require("bcrypt");
 // 암호화에 이용하는 slat 자릿수 설정
 const saltRounds = 10;
@@ -41,12 +43,12 @@ const userSchema = mongoose.Schema({
 userSchema.pre("save", function (next) {
   //비밀번호를 암호화 시킨다
 
-  //중요!! 여기서의 this는 인스턴스를 가르키고 있다 //
+  //*중요!!this는 req.body가 되도록 화살표함수로 쓰면 안된다//
   var user = this;
 
   //password 변환될때만
   if (user.isModified("password")) {
-    //salt를 이용해서 비밀번호 암호화
+    //bcrypt의 salt를 이용해서 비밀번호 암호화
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) return next(err);
       bcrypt.hash(user.password, salt, function (err, hash) {
@@ -56,6 +58,7 @@ userSchema.pre("save", function (next) {
       });
     });
   } else {
+    //next()만 해주면 콜백해서 나머지부분도 실행시킴
     next();
   }
 });
@@ -84,7 +87,6 @@ userSchema.methods.generateToken = function (cb) {
 
 userSchema.statics.findByToken = function (token, cb) {
   var user = this;
-  console.log(user);
 
   //토큰을 decode 한다.
   jwt.verify(token, "secret", function (err, decode) {

@@ -5,6 +5,7 @@ import LandingPage from "./components/views/LandingPage/LandingPage";
 import LoginPage from "./components/views/LoginPage/LoginPage";
 import Footer from "./components/views/Footer/Footer";
 import RegisterPage from "./components/views/RegisterPage/RegisterPage";
+import Auth from "./components/hoc/auth";
 
 function App() {
   return (
@@ -20,12 +21,14 @@ function App() {
         <Switch>
           {/* 이렇게 작성하면 props를 쓸 수 없다
           <Route exact path="/">
-            <LandingPage />
+            <div>
+              <LandingPage />
+            </div>
           </Route> */}
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/footer" component={Footer} />
+          <Route exact path="/" component={Auth(LandingPage, null)} />
+          <Route exact path="/login" component={Auth(LoginPage, false)} />
+          <Route exact path="/register" component={Auth(RegisterPage, false)} />
+          {/* <Route exact path="/footer" component={Auth(Footer)} /> */}
         </Switch>
       </div>
     </Router>

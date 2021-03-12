@@ -13,6 +13,7 @@ let auth = (req, res, next) => {
         isAuth: false,
         error: true,
       });
+    //왜 req에 넣어주는가? res는 안되나?
     req.token = token;
     req.user = user;
     next();

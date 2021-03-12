@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { PromiseProvider } from "mongoose";
+import { withRouter } from "react-router-dom";
 
 const LandingPage = (props) => {
-  useEffect(() => {
-    axios.get("/api/hello").then((res) => console.log(res));
-  }, []);
-
   const offLogout = () => {
     axios.get("/api/users/logout").then((res) => {
       if (res.data.success) {
@@ -35,4 +31,4 @@ const LandingPage = (props) => {
   );
 };
 
-export default LandingPage;
+export default withRouter(LandingPage);
